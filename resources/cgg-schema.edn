@@ -1,5 +1,25 @@
 {:objects
- {:BoardGame
+ {:Deployment
+  {:description "A deployment within octopus"
+   :fields
+   {:id {:type (non-null ID)}
+    :force_package_download {:type (non-null Boolean)}
+    :force_package_redeployment {:type (non-null Boolean)}
+    :comments {:type String}
+    :created {:type (non-null String)}
+    :release {:type (non-null :Release)
+              :resolve :Deployment/release }
+    }}
+
+  :Release
+  {:description "An individual release of a a project"
+   :fields
+   {:id {:type (non-null ID)}
+    :version {:type (non-null String)}
+    :release_notes {:type String}
+    }}
+
+ :BoardGame
   {:description "A physical or virtual board game"
    :fields
    {:id {:type ID}
@@ -64,6 +84,11 @@
    :args
    {:id {:type ID}}
    :resolve :query/game-by-id}
+
+  :deployments
+  {:type (list :Deployment)
+   :description "Get most recent deployments in descending date order"
+   :resolve :query/deployments }
 
   :member_by_id
   {:type :Member

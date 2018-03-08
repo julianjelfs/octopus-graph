@@ -1,6 +1,6 @@
-# clojure-game-geek
+# Octopus-graph
 
-A Clojure library designed to ... well, that part is up to you.
+A graphql server to navigate the octopus deploy api implemented in clojure
 
 ## Usage
 
@@ -13,4 +13,4 @@ Copyright © 2018 FIXME
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
 =======
-# clojure-game-geek
+# octopus-graph

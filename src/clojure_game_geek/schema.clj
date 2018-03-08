@@ -77,12 +77,34 @@
   (fn [_ _ game-rating]
     (db/find-game-by-id db (:game_id game-rating))))
 
+(defn deployments
+  [config]
+  (fn [_ _ _]
+    [{:id 123
+      :force_package_download false
+      :force_package_redeployment true
+      :created "01-01-2018:12:00:45"
+      :release_id 456
+      :comments "lets see if this works"}]))
+
+(defn deployment-release
+  [config]
+  (fn [_ _ dep]
+    {:id (:release_id dep)
+     :version "1.2.3456"
+     :release_notes "this is a smashing release"}))
+
+
 (defn resolver-map
   [component]
-  (let [db (:db component)]
+  (let [db (:db component)
+        config (:config component)]
+    (prn config)
     {:query/game-by-id (game-by-id db)
      :query/member-by-id (member-by-id db)
+     :query/deployments (deployments config)
      :mutation/rate-game (rate-game db)
+     :Deployment/release (deployment-release config)
      :BoardGame/designers (board-game-designers db)
      :BoardGame/rating-summary (rating-summary db)
      :GameRating/game (game-rating->game db)
@@ -108,4 +130,5 @@
   []
   {:schema-provider (-> {}
                         map->SchemaProvider
+                        (component/using [:config])
                         (component/using [:db]))})
